@@ -3,6 +3,8 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import { type AddCartItemInput, type CartContextType, type CartState } from "../model/cart.types";
 
 const CART_STORAGE_KEY = "cart";
+const MIN_QUANTITY = 1;
+const MAX_QUANTITY = 99;
 
 const emptyCart = (): CartState => ({
   items: [],
@@ -13,6 +15,10 @@ const emptyCart = (): CartState => ({
 
 const calculateTotal = (items: CartState["items"]): number => {
   return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+};
+
+const clampQuantity = (value: number): number => {
+  return Math.min(MAX_QUANTITY, Math.max(MIN_QUANTITY, value));
 };
 
 const getInitialCart = (): CartState => {
@@ -58,10 +64,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       const items = existingItem
         ? previous.items.map((entry) =>
             entry.productId === item.productId
-              ? { ...entry, quantity: entry.quantity + item.quantity }
+              ? { ...entry, quantity: clampQuantity(entry.quantity + item.quantity) }
               : entry,
           )
-        : [...previous.items, item];
+        : [...previous.items, { ...item, quantity: clampQuantity(item.quantity) }];
 
       return {
         ...previous,
@@ -79,14 +85,16 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
+    if (quantity < MIN_QUANTITY) {
       removeItem(productId);
       return;
     }
 
+    const safeQuantity = clampQuantity(quantity);
+
     setCart((previous) => {
       const items = previous.items.map((entry) =>
-        entry.productId === productId ? { ...entry, quantity } : entry,
+        entry.productId === productId ? { ...entry, quantity: safeQuantity } : entry,
       );
 
       return {

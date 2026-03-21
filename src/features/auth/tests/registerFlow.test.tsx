@@ -32,6 +32,9 @@ createMockServer([
       updatedAt: "2025-01-01T00:00:00.000Z",
     });
   }),
+  http.get(`${API_BASE}/api/products`, async () => {
+    return HttpResponse.json([]);
+  }),
 ]);
 
 describe("register flow", () => {

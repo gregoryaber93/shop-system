@@ -25,6 +25,17 @@ createMockServer([
 
     return HttpResponse.json({ token });
   }),
+  http.get(`${API_BASE}/api/users/profile`, async () => {
+    return HttpResponse.json({
+      id: "user-1",
+      email: "john@example.com",
+      createdAt: "2025-01-01T00:00:00.000Z",
+      updatedAt: "2025-01-01T00:00:00.000Z",
+    });
+  }),
+  http.get(`${API_BASE}/api/products`, async () => {
+    return HttpResponse.json([]);
+  }),
 ]);
 
 describe("auth flow", () => {

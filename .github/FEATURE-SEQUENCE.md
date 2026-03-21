@@ -60,39 +60,39 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: Browse products, add to cart.
 
 ### 2.1 Products Listing (3h)
-- [ ] ProductService API client
-- [ ] React Query hooks (useAllProducts, useProductsByShop)
-- [ ] ProductList component with loading/error/empty states
-- [ ] ProductCard component
-- [ ] Product filtering by shop
-- [ ] Client-side sorting
+- [x] ProductService API client
+- [x] React Query hooks (useAllProducts, useProductsByShop)
+- [x] ProductList component with loading/error/empty states
+- [x] ProductCard component
+- [x] Product filtering by shop
+- [x] Client-side sorting
 
 **Instruction**: [09-products-listing-and-caching.instructions.md](instructions/09-products-listing-and-caching.instructions.md)
 
 ### 2.2 Shopping Cart (3h)
-- [ ] CartContext with add/remove/update/clear actions
-- [ ] Cart persistence in localStorage
-- [ ] CartItem component
-- [ ] CartSummary component
-- [ ] Quantity selector with min/max validation
-- [ ] Remove item from cart
+- [x] CartContext with add/remove/update/clear actions
+- [x] Cart persistence in localStorage
+- [x] CartItem component
+- [x] CartSummary component
+- [x] Quantity selector with min/max validation
+- [x] Remove item from cart
 
 **Instruction**: [10-shopping-cart-and-orders.instructions.md](instructions/10-shopping-cart-and-orders.instructions.md#cart-context)
 
 ### 2.3 Cart UI (2h)
-- [ ] Cart page/modal
-- [ ] Display cart items with price breakdown
-- [ ] Show cart total
-- [ ] Link from ProductCard to cart
-- [ ] Empty cart state
+- [x] Cart page/modal
+- [x] Display cart items with price breakdown
+- [x] Show cart total
+- [x] Link from ProductCard to cart
+- [x] Empty cart state
 
 **Instruction**: [10-shopping-cart-and-orders.instructions.md](instructions/10-shopping-cart-and-orders.instructions.md#product-list-component)
 
 ### 2.4 Tests (2h)
-- [ ] Product listing test
-- [ ] Add to cart test
-- [ ] Update quantity test
-- [ ] Clear cart test
+- [x] Product listing test
+- [x] Add to cart test
+- [x] Update quantity test
+- [x] Clear cart test
 
 **Instruction**: [16-integration-testing-scenarios.instructions.md](instructions/16-integration-testing-scenarios.instructions.md#scenario-2-browse-products---add-to-cart---checkout)
 
@@ -366,7 +366,7 @@ Implementation plan for features in logical order to build a fully functional ap
 | Date | Sprint | Goal | Status |
 |------|--------|------|--------|
 | Day 1-3 | 1 | Auth working | ✅ Done |
-| Day 4-6 | 2 | Products + Cart | ⏳ |
+| Day 4-6 | 2 | Products + Cart | ✅ Done |
 | Day 7-9 | 3 | Checkout + Orders | ⏳ |
 | Day 10-11 | 4 | Promotions | ⏳ |
 | Day 12-13 | 5 | User Profile | ⏳ |
