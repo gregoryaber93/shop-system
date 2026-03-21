@@ -1,0 +1,253 @@
+## Streszczenie Instrukcji Projektu Shop System (React Frontend)
+
+---
+
+### 1) **Przeznaczenie plików najwyższego poziomu**
+
+| Plik | Cel |
+|------|-----|
+| **copilot-instructions.md** | Główne zasady dla Copilota: priorytety (poprawność biznesowa → czytelnośc → bezpieczeństwo → performance → testowalnośc), globalne reguły (TypeScript strict, modułowość, obsługa stanów loading/empty/error/success, walidacja danych). |
+| **QUICK-START.md** | Praktyczny przewodnik 30 minut: setup Vite/npm, struktura katalogów, zmienne środowisk, konfiguracja, bootstrap providers. |
+| **FEATURE-SEQUENCE.md** | Mapa drogowa implementacji w 4 sprintach: Sprint 1 (Auth), Sprint 2 (Products+Cart), Sprint 3 (Orders+Checkout), Sprint 4+ (Promotions, User Profile, Performance). |
+
+---
+
+### 2) **Jednolinijkowniki dla instrukcji 01–17**
+
+| # | Plik | Zastosowanie |
+|---|------|--------------|
+| **01** | Architecture | Feature-first struktura: `src/features/<name>`, `src/shared`, `src/app` + podział na `api`, `model`, `ui`, `hooks`, `tests`. |
+| **02** | API Integration | Dedykowani klienci API, walidacja schematów (Zod), timeout + retry + mapowanie błędów, brak bezpośrednich `fetch/axios` w komponentach. |
+| **03** | State & Data Fetching | Separacja server state (React Query) od client state (useState), stabilne query keys, obsługa race conditions. |
+| **04** | UI/UX Accessibility | Mobile-first design, semantyczne HTML, keyboard accessibility, aria-* tylko gdzie trzeba, animacje celowe. |
+| **05** | Security & Performance | Bez `dangerouslySetInnerHTML`, ostrożnie z localStorage, lazy loading, code splitting, bundle < 300KB, memoizacja na zasadzie pomiaru. |
+| **06** | Testing & Quality | Testy dla każdej zmiany: logika biznesowa + warstwa mapowania + interakcje, MSW dla stubowania, testy integracyjne dla krytycznych flowów. |
+| **07** | Delivery & DevX | Małe PRy (jeden tematycznie), opis: cel + scope + ryzyko + plan rollbacku, prompt pattern (kontekst → wynik → ograniczenia → testy). |
+| **08** | Authentication & JWT | AuthContext + JWT decode, localStorage (token+userId+roles), axios interceptor do `Authorization: Bearer`, refresh offline detection & auto-redirect 401. |
+| **09** | Products Listing & Caching | ProductService API client, React Query hooks (staleTime 5min / gcTime 30min), ProductList z loading/error/empty, ceny read-only. |
+| **10** | Shopping Cart & Orders | CartContext (localStorage persistence), OrderService z idempotencyKey, status polling (Created → PaymentPending → Fulfilled). |
+| **11** | Promotions & Discounts | PromotionService: getAllActive(), evaluatePromotions(), getUserProfile(), frontend sprawdza eligibility ale backend kalkuluje ostatecznie. |
+| **12** | User Profile & History | UserContext + UserService (getProfile, updateProfile), OrderService (getMyOrders, getById), order history list. |
+| **13** | Error Handling & ProblemDetails | Axios interceptor parseuje ProblemDetails (RFC 7807): status + title + detail + correlationId → user-friendly message w UI. |
+| **14** | Idempotency & Retry | UUID + Idempotency-Key header, in-memory cache (1h TTL), retry exponential backoff max 3x, handleuj UNAVAILABLE (503) + DEADLINE_EXCEEDED (408). |
+| **15** | gRPC Client Integration | Understanding: OrderService → ProductService/PromotionService via gRPC, 100–500ms latency, timeout 10s, error mapping (UNAVAILABLE, DEADLINE_EXCEEDED). |
+| **16** | Integration Testing Scenarios | MSW handlers (mock endpoints), scenariusze: Auth Flow (register→login→profile), Checkout Flow (products→cart→order), event-based assertions. |
+| **17** | Performance & Caching Strategies | Bundle < 150KB main + 30KB React Query, lazy routes, React Query defaults (5min stale / 30min gc), localStorage caching (PRODUCTS 30min, PROMOTIONS 1min). |
+
+---
+
+### 3) **Praktyczny workflow w VS Code + Copilot Chat**
+
+#### **A) Przed przystąpieniem do kodu**
+1. **Przeczytaj odpowiednie instrukcje** — jeśli piszesz feature: `01-architecture` + `07-delivery-devx`.
+2. **Ustal kontekst** — screen/komponenty dotyczy jaki serwis (Products, Auth, Orders)?
+3. **Sprawdź FEATURE-SEQUENCE** — czy feature jest planowany, w jakim sprincie?
+
+#### **B) Pisanie promptu do Copilota** (pattern)
+```
+Kontekst:
+- Piszę [eksport] w [moduł].
+- Integracja z [serwis API] (backend: [endpoint]).
+- Zależności: [inne komponenty/hooksy].
+
+Cel:
+- Po tej zmianie [konkretne zachowanie].
+- User powinien widzieć [co na ekranie].
+
+Ograniczenia:
+- Użyj TypeScript strict + Zod do walidacji.
+- Separation of concerns: API client → hooks → komponenty.
+- States: loading → error → empty → success.
+- Testy: behavior tests (user interaction, nie implementation details).
+
+Wyjście spodziewane:
+- Kod + testy + lista ryzyk.
+```
+
+#### **C) Proces wdrażania**
+1. **Przeczytaj instrukcje** mogące się odnosić (np. #02 dla API client).
+2. **Skopiuj wzory** z instrukcji (np. kod `AuthContext` z #08).
+3. **Dostosuj do sprawy** — nazwy, schematy, endpointy.
+4. **Uruchom linter + typecheck** — musi przejść, brak `any`.
+5. **Napisz testy** — co najmniej happy path + jeden error case.
+6. **Otaguj PR** — link do instrukcji, opis ryzyko.
+
+#### **D) Szybka referencja w Copilot**
+Zamiast całą instrukcję czytać, pisz query:
+- `"Show me pattern for React Query hook from instruction 09"`
+- `"How do I handle 401 in error interceptor?"`
+- `"Example MSW handler for products mocking"`
+
+---
+
+### 4) **Konkretne szablony promptów Copilota**
+
+#### **Template A: Nowa Feature** 
+```
+Chcę zaimplementować feature: [nazwa], np. "User Wishlist".
+
+Kontekst:
+- Dodanie ikony "♥" do ProductCard.
+- API: GET /api/users/wishlist, POST /api/wishlist, DELETE /api/wishlist/:id.
+- Backend: WishlistService, JWT wymagany.
+- Lokalizacja kodu: src/features/wishlist.
+
+Cel:
+- User klika ♥ → produkt dodawany do wishlisty.
+- Wishlist persists w React Query cache + localStorage.
+- Ikonka "♥" zmienia się na filled gdy produkt w wishlisty.
+- Dedykowana strona /wishlist ze ścieżką produktów.
+
+Ograniczenia:
+- Kod: [instrukcje 01/02/03/09].
+- Struktura: src/features/wishlist/{api, hooks, ui, tests}.
+- API Client separation (nie axios w komponentach).
+- Testy: dodaj do wishlist, usuń z wishlist, persist w cache.
+
+Co chcę:
+1. Plik api/wishlistClient.ts (get, add, remove).
+2. Hook useWishlist + useAddToWishlist (mutation).
+3. WishlistIcon component (toggle).
+4. WishlistPage component (lista, delete action).
+5. MSW mock handler.
+6. Test file (add/remove flow).
+```
+
+#### **Template B: API Client**
+```
+Potrzebuje API client dla [serwisu], np. "OrderService".
+
+Dane z backendu:
+- POST /api/orders {items, promotionIds} → Order | ProblemDetails
+- GET /api/orders/my → OrderHistoryItem[]
+- GET /api/orders/{id} → Order
+
+Warunki:
+- JWT w Authorization header.
+- Idempotency-Key na POST /orders.
+- Error handling via ProblemDetails([instrukcja 13]).
+- Timeout 10s.
+
+Co chcę:
+1. orderApiClient.ts z funkcjami.
+2. Request/Response typy (Zod schematy).
+3. Retry logika dla 503/408.
+4. Mapping: backend Order → UI OrderDTO.
+```
+
+#### **Template C: React Query Hook**
+```
+Stwórz hook dla [logiki], np. "produkty filtrowane po shopie".
+
+Źródło danych:
+- GET /api/shop/{shopId}/products
+
+Wymagania:
+- Hook: useProductsByShop(shopId: string | null).
+- Tylko fetcha jak shopId !== null.
+- staleTime: 5 min, gcTime: 30 min.
+- Obsłuż error + loading state.
+- Refetch na demand.
+
+Co chcę:
+1. Hook z React Query.
+2. Stable query key.
+3. Request/Response validation (Zod).
+4. Komponent example (ProductList).
+5. Test: hook z success + error scenario.
+```
+
+#### **Template D: UI Component**
+```
+Komponenta [typu], np. ProductCard dla listing.
+
+Props interface:
+- product: Product
+- onAddToCart?: (qty: number) => void
+- isInWishlist?: boolean
+- onWishlistToggle?: () => void
+
+Wymagania ([instrukcja 04]):
+- Mobile-first responsive.
+- Klawisz Enter na "Add to Cart".
+- Accessibility: alt text, aria-label na buttons.
+- Loading state (disabled button).
+- Animacja na hover/click (fade).
+
+Co chcę:
+1. ProductCard.tsx z Tailwind (nie external UI lib).
+2. Disabled state gdy `isLoading`.
+3. Tooltip na price (np. "Price is read-only").
+4. Snapshot + behavior test.
+```
+
+#### **Template E: Integration Test Scenario**
+```
+Test scenariusz: [czegoś], np. "Complete Checkout Flow".
+
+Setup:
+- MSW mock dla Products, Promotions, Orders API.
+- User zalogowany (localStorage + token mock).
+- Test framework: Vitest + React Testing Library.
+
+Scenariusz:
+1. Renderuj App w AuthProvider + QueryClientProvider.
+2. User naviguje do /shop.
+3. Widzi produkty (mock response).
+4. Dodaje 2 produkty do koszyka.
+5. Klika Checkout.
+6. Wpisuje address.
+7. Stosuje promocję.
+8. Sumbmituje order → success toast + redirect /orders.
+
+Assertions:
+- Order createdAt exist.
+- Order status === "Created".
+- Cart cleared z localStorage.
+- Idempotency-Key sent w request header.
+
+Co chcę:
+1. Test plik (checkoutFlow.test.tsx).
+2. MSW handlers setup.
+3. User interactions (fireEvent/userEvent).
+4. Assertions dla każdego kroku.
+```
+
+#### **Template F: Bugfix / Refactor**
+```
+Rozwiąż / ulepsz: [problem], np. "Reduce cart component re-renders".
+
+Problem:
+- CartComponent re-renderuje się 3x gdy dodajemy produkt.
+- Przyczyna: context broadcast do wszystkich subscribers.
+
+Diagnoza:
+- Gdzie problem? (komponent → parent context zmiana).
+- Performance impact? (100ms extra).
+
+Plan ([instrukcja 05]):
+1. Stwórz selector hooks zamiast consume całego context.
+2. Memoizuj CartItem components.
+3. Measure: przed + po benchmark.
+
+Co chcę:
+1. useCartItems() hook (selector).
+2. Refactor CartComponent + CartItem.
+3. React DevTools Profiler screenshot.
+4. Test: tyle samo funkcjonalności, mniej re-renders.
+```
+
+---
+
+### **Podsumowanie: "Golden Rules"**
+
+1. **Zawsze separuj**: API client ≠ Component ≠ Hook.
+2. **Typy pierwszy**: Zod + TypeScript strict, zero `any`.
+3. **States zawsze**: loading → error → empty → success.
+4. **Testy obowiązek**: behavior, nie implementation, MSW mock.
+5. **Prompt = sukces**: Daj kontekst + cel + ograniczenia, Copilot robi resztę.
+6. **PR male**: jedan feature = jeden PR, opis = ryzyk + rollback.
+7. **Query keys stabilne**: Nie duplikuj, referencja + namespacing.
+8. **Error mapping**: Backend ProblemDetails → user message w UI.
+9. **Performance**: Bundle < 300KB, lazy routes, React Query defaults.
+10. **gRPC reality**: Timeout 10s, may fail gracefully, UNAVAILABLE = 503.
