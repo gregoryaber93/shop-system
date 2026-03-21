@@ -110,40 +110,40 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: User can place order with idempotency.
 
 ### 3.1 Order Placement (3h)
-- [ ] OrderService API client (placeOrder, getMyOrders, getById)
-- [ ] Generate idempotencyKey (UUID v4)
-- [ ] Checkout form component
-- [ ] Error handling for checkout (ProblemDetails)
-- [ ] Order confirmation page
-- [ ] Display order ID and summary
+- [x] OrderService API client (placeOrder, getMyOrders, getById)
+- [x] Generate idempotencyKey (UUID v4)
+- [x] Checkout form component
+- [x] Error handling for checkout (ProblemDetails)
+- [x] Order confirmation page
+- [x] Display order ID and summary
 
 **Instructions**:
 - [10-shopping-cart-and-orders.instructions.md](instructions/10-shopping-cart-and-orders.instructions.md#checkout-with-promotions)
 - [14-idempotency-and-retry-patterns.instructions.md](instructions/14-idempotency-and-retry-patterns.instructions.md)
 
 ### 3.2 Idempotency & Retry (2h)
-- [ ] Idempotency key generation
-- [ ] Idempotency cache in memory
-- [ ] Retry logic with exponential backoff
-- [ ] Retry UI (show "Retrying..." status)
-- [ ] Max retries (3) logic
+- [x] Idempotency key generation
+- [x] Idempotency cache in memory
+- [x] Retry logic with exponential backoff
+- [x] Retry UI (show "Retrying..." status)
+- [x] Max retries (3) logic
 
 **Instruction**: [14-idempotency-and-retry-patterns.instructions.md](instructions/14-idempotency-and-retry-patterns.instructions.md)
 
 ### 3.3 Order Status Polling (2h)
-- [ ] Order detail page
-- [ ] Polling logic (fetch every 2s)
-- [ ] Display order status (Created -> PaymentPending -> PaymentAuthorized -> Fulfilled)
-- [ ] Auto-refresh when status changes
-- [ ] Stop polling when order is Fulfilled
+- [x] Order detail page
+- [x] Polling logic (fetch every 2s)
+- [x] Display order status (Created -> PaymentPending -> PaymentAuthorized -> Fulfilled)
+- [x] Auto-refresh when status changes
+- [x] Stop polling when order is Fulfilled
 
 **Instruction**: [12-user-profile-and-history.instructions.md](instructions/12-user-profile-and-history.instructions.md#polling-for-order-status)
 
 ### 3.4 Tests (2h)
-- [ ] Checkout flow test
-- [ ] Idempotency test (duplicate request)
-- [ ] Retry on 503 test
-- [ ] Order status polling test
+- [x] Checkout flow test
+- [x] Idempotency test (duplicate request)
+- [x] Retry on 503 test
+- [x] Order status polling test
 
 **Instruction**: [16-integration-testing-scenarios.instructions.md](instructions/16-integration-testing-scenarios.instructions.md#scenario-2-browse-products---add-to-cart---checkout)
 
@@ -367,7 +367,7 @@ Implementation plan for features in logical order to build a fully functional ap
 |------|--------|------|--------|
 | Day 1-3 | 1 | Auth working | ✅ Done |
 | Day 4-6 | 2 | Products + Cart | ✅ Done |
-| Day 7-9 | 3 | Checkout + Orders | ⏳ |
+| Day 7-9 | 3 | Checkout + Orders | ✅ Done |
 | Day 10-11 | 4 | Promotions | ⏳ |
 | Day 12-13 | 5 | User Profile | ⏳ |
 | Day 14-15 | 6 | Error & Performance | ⏳ |
