@@ -2,64 +2,28 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { authApiClient } from "../api/authClient";
 import { decodeJwtClaims } from "../model/jwt";
 import { type AuthContextType, type AuthState } from "../model/auth.types";
-
-const AUTH_TOKEN_KEY = "auth_token";
-const AUTH_USER_ID_KEY = "auth_userId";
-const AUTH_ROLES_KEY = "auth_roles";
+import {
+  AUTH_UNAUTHORIZED_EVENT,
+  clearStoredAuthState,
+  getStoredAuthState,
+  persistStoredAuthState,
+} from "@/shared/lib/auth/authStorage";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const getInitialState = (): AuthState => {
-  if (typeof window === "undefined") {
-    return { token: null, userId: null, roles: [] };
-  }
-
-  const token = window.localStorage.getItem(AUTH_TOKEN_KEY);
-  const userId = window.localStorage.getItem(AUTH_USER_ID_KEY);
-
-  let roles: string[] = [];
-  const storedRoles = window.localStorage.getItem(AUTH_ROLES_KEY);
-  if (storedRoles) {
-    try {
-      const parsed = JSON.parse(storedRoles) as unknown;
-      if (Array.isArray(parsed)) {
-        roles = parsed.filter((item): item is string => typeof item === "string");
-      }
-    } catch {
-      roles = [];
-    }
-  }
-
-  return { token, userId, roles };
-};
-
-const persistState = (state: AuthState): void => {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  if (!state.token) {
-    window.localStorage.removeItem(AUTH_TOKEN_KEY);
-    window.localStorage.removeItem(AUTH_USER_ID_KEY);
-    window.localStorage.removeItem(AUTH_ROLES_KEY);
-    return;
-  }
-
-  window.localStorage.setItem(AUTH_TOKEN_KEY, state.token);
-  window.localStorage.setItem(AUTH_USER_ID_KEY, state.userId ?? "");
-  window.localStorage.setItem(AUTH_ROLES_KEY, JSON.stringify(state.roles));
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [authState, setAuthState] = useState<AuthState>(getInitialState);
+  const navigate = useNavigate();
+  const [authState, setAuthState] = useState<AuthState>(getStoredAuthState);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -73,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     setAuthState(nextState);
-    persistState(nextState);
+    persistStoredAuthState(nextState);
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
@@ -112,12 +76,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const nextState: AuthState = { token: null, userId: null, roles: [] };
     setAuthState(nextState);
     setErrorMessage(null);
-    persistState(nextState);
+    clearStoredAuthState();
   }, []);
 
   const clearError = useCallback(() => {
     setErrorMessage(null);
   }, []);
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      logout();
+      navigate("/login", { replace: true });
+    };
+
+    window.addEventListener(AUTH_UNAUTHORIZED_EVENT, handleUnauthorized);
+
+    return () => {
+      window.removeEventListener(AUTH_UNAUTHORIZED_EVENT, handleUnauthorized);
+    };
+  }, [logout, navigate]);
 
   const value = useMemo<AuthContextType>(() => ({
     ...authState,

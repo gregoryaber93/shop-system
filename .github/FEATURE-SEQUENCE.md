@@ -7,51 +7,51 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: Working authentication, user can login/register.
 
 ### 1.1 Project Setup (2h)
-- [ ] Vite project initialization
-- [ ] Install all dependencies
-- [ ] Setup environment variables
-- [ ] Create folder structure (src/features, src/shared, src/lib)
-- [ ] Configure path aliases (@/)
+- [x] Vite project initialization
+- [x] Install all dependencies
+- [x] Setup environment variables
+- [x] Create folder structure (src/features, src/shared, src/lib)
+- [x] Configure path aliases (@/)
 
 **Instruction**: [QUICK-START.md](QUICK-START.md#1-project-setup-30-min)
 
 ### 1.2 Core Infrastructure (3h)
-- [ ] Setup Axios + queryClient
-- [ ] Create error handling layer (ProblemDetails mapping)
-- [ ] Create AuthContext + AuthProvider
-- [ ] Create UserProvider
-- [ ] Create CartProvider
-- [ ] Setup root Providers wrapper
+- [x] Setup Axios + queryClient
+- [x] Create error handling layer (ProblemDetails mapping)
+- [x] Create AuthContext + AuthProvider
+- [x] Create UserProvider
+- [x] Create CartProvider
+- [x] Setup root Providers wrapper
 
 **Instructions**: 
 - [08-authentication-and-jwt.instructions.md](instructions/08-authentication-and-jwt.instructions.md#axios-interceptor-to-auto-inject-jwt)
 - [13-error-handling-problemdetails.instructions.md](instructions/13-error-handling-problemdetails.instructions.md)
 
 ### 1.3 Authentication Pages (4h)
-- [ ] Login page with form validation
-- [ ] Register page with form validation
-- [ ] JWT decoding utility
-- [ ] Token storage in localStorage
-- [ ] Protected route wrapper (<ProtectedRoute />)
-- [ ] Logout functionality
-- [ ] Auto-redirect to login on 401
+- [x] Login page with form validation
+- [x] Register page with form validation
+- [x] JWT decoding utility
+- [x] Token storage in localStorage
+- [x] Protected route wrapper (<ProtectedRoute />)
+- [x] Logout functionality
+- [x] Auto-redirect to login on 401
 
 **Instruction**: [08-authentication-and-jwt.instructions.md](instructions/08-authentication-and-jwt.instructions.md)
 
 ### 1.4 Auth Tests (2h)
-- [ ] MSW setup
-- [ ] Login flow test
-- [ ] Register flow test
-- [ ] Protected route test
+- [x] MSW setup
+- [x] Login flow test
+- [x] Register flow test
+- [x] Protected route test
 
 **Instruction**: [16-integration-testing-scenarios.instructions.md](instructions/16-integration-testing-scenarios.instructions.md#scenario-1-user-registration---login---view-profile)
 
 **DoD (Definition of Done)**:
-- ✅ Register -> Login -> JWT in localStorage
-- ✅ Protected routes redirect to /login when !token
-- ✅ Unauthorized requests return 401 + redirect
-- ✅ Unit + integration tests pass
-- ✅ No lint/typecheck errors
+- [x] Register -> Login -> JWT in localStorage
+- [x] Protected routes redirect to /login when !token
+- [x] Unauthorized requests return 401 + redirect
+- [x] Unit + integration tests pass
+- [x] No lint/typecheck errors
 
 ---
 
@@ -365,7 +365,7 @@ Implementation plan for features in logical order to build a fully functional ap
 
 | Date | Sprint | Goal | Status |
 |------|--------|------|--------|
-| Day 1-3 | 1 | Auth working | ⏳ |
+| Day 1-3 | 1 | Auth working | ✅ Done |
 | Day 4-6 | 2 | Products + Cart | ⏳ |
 | Day 7-9 | 3 | Checkout + Orders | ⏳ |
 | Day 10-11 | 4 | Promotions | ⏳ |
