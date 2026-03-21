@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { LoginPage, ProtectedRoute, RegisterPage } from "../../features/auth";
 import { CheckoutPage, OrderDetailPage } from "@/features/orders";
+import { ProfilePage } from "@/features/user";
 import { ForbiddenPage } from "../ui/ForbiddenPage";
 import { HomePage } from "../ui/HomePage";
 import { NotFoundPage } from "../ui/NotFoundPage";
@@ -33,6 +34,14 @@ export const AppRoutes = () => {
         element={(
           <ProtectedRoute>
             <OrderDetailPage />
+          </ProtectedRoute>
+        )}
+      />
+      <Route
+        path="/profile"
+        element={(
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         )}
       />

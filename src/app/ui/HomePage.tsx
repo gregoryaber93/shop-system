@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useAuth } from "../../features/auth";
 import { CartModal, useCart } from "@/features/cart";
@@ -27,6 +28,7 @@ export const HomePage = () => {
       <p>Email: {profile?.email ?? "unknown"}</p>
       <p>Roles: {roles.length > 0 ? roles.join(", ") : "none"}</p>
       <p>Cart items: {cart.items.length}</p>
+      <Link to="/profile">Go to profile</Link>
       <button type="button" onClick={() => setIsCartOpen(true)}>
         View cart
       </button>

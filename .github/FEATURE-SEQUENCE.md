@@ -210,30 +210,30 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: User can view profile and order history.
 
 ### 5.1 User Profile (2h)
-- [ ] UserService API client (getProfile, updateProfile)
-- [ ] UserProvider with useQuery
-- [ ] Profile page component
-- [ ] Edit profile form (firstName, lastName, phoneNumber)
-- [ ] Save changes to backend
-- [ ] Show user info (email, created date)
+- [x] UserService API client (getProfile, updateProfile)
+- [x] UserProvider with useQuery
+- [x] Profile page component
+- [x] Edit profile form (firstName, lastName, phoneNumber)
+- [x] Save changes to backend
+- [x] Show user info (email, created date)
 
 **Instruction**: [12-user-profile-and-history.instructions.md](instructions/12-user-profile-and-history.instructions.md#user-profile-component)
 
 ### 5.2 Order History (2h)
-- [ ] Order history list in UserProvider
-- [ ] Order history table/list component
-- [ ] Click order -> go to detail page
-- [ ] Show order ID, date, total, status, item count
-- [ ] Link to view full order details
+- [x] Order history list in UserProvider
+- [x] Order history table/list component
+- [x] Click order -> go to detail page
+- [x] Show order ID, date, total, status, item count
+- [x] Link to view full order details
 
 **Instruction**: [12-user-profile-and-history.instructions.md](instructions/12-user-profile-and-history.instructions.md#order-history)
 
 ### 5.3 Profile UI Polish (1h)
-- [ ] Profile navigation
-- [ ] Edit mode toggle
-- [ ] Unsaved changes warning
-- [ ] Success/error messages
-- [ ] Loading states
+- [x] Profile navigation
+- [x] Edit mode toggle
+- [x] Unsaved changes warning
+- [x] Success/error messages
+- [x] Loading states
 
 **DoD**:
 - ✅ Profile loads from backend
@@ -369,7 +369,7 @@ Implementation plan for features in logical order to build a fully functional ap
 | Day 4-6 | 2 | Products + Cart | ✅ Done |
 | Day 7-9 | 3 | Checkout + Orders | ✅ Done |
 | Day 10-11 | 4 | Promotions | ✅ Done |
-| Day 12-13 | 5 | User Profile | ⏳ |
+| Day 12-13 | 5 | User Profile | ✅ Done |
 | Day 14-15 | 6 | Error & Performance | ⏳ |
 | Day 16-17 | 7 | Testing & Deploy | ⏳ |
 

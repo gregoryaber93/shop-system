@@ -14,6 +14,12 @@ const userProfileSchema = z.object({
   updatedAt: z.string(),
 });
 
+const updateProfileRequestSchema = z.object({
+  firstName: z.string().trim().min(1).max(50).optional(),
+  lastName: z.string().trim().min(1).max(50).optional(),
+  phoneNumber: z.string().trim().min(7).max(20).optional(),
+});
+
 const parseUserProfile = (value: unknown): UserProfile => {
   const parsed = userProfileSchema.safeParse(value);
 
@@ -37,6 +43,12 @@ export const createUserApiClient = (
   return {
     async getProfile(): Promise<UserProfile> {
       const response = await client.get("/api/users/profile");
+      return parseUserProfile(response.data);
+    },
+
+    async updateProfile(data: Partial<UserProfile>): Promise<UserProfile> {
+      const request = updateProfileRequestSchema.parse(data);
+      const response = await client.put("/api/users/profile", request);
       return parseUserProfile(response.data);
     },
   };

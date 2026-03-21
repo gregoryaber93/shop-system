@@ -20,6 +20,10 @@ export interface UserContextType {
   profile: UserProfile | null;
   orderHistory: OrderHistoryItem[];
   isLoading: boolean;
+  isUpdating: boolean;
   errorMessage: string | null;
+  updateErrorMessage: string | null;
+  updateSuccessMessage: string | null;
   refetchProfile: () => Promise<void>;
+  updateProfile: (data: Partial<UserProfile>) => Promise<void>;
 }
