@@ -35,6 +35,16 @@ const renderAuthorizedApp = () => {
         { id: "prod-1", name: "Widget", type: "Tool", price: 29.99, shopId: "shop-1" },
       ]);
     }),
+    http.get(`${API_BASE}/api/promotions`, async () => {
+      return HttpResponse.json([]);
+    }),
+    http.get(`${API_BASE}/api/promotions/user-profile`, async () => {
+      return HttpResponse.json({
+        userId: "user-11",
+        totalPoints: 0,
+        earnedAt: "2026-01-01T00:00:00.000Z",
+      });
+    }),
   );
 
   render(

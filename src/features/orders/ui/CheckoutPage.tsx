@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/features/auth";
 import { useCart } from "@/features/cart";
+import { PromotionSelector, type EvaluatePromotionResponse } from "@/features/promotions";
+import { usePromotion } from "@/features/promotions";
 import { dispatchUnauthorizedEvent } from "@/shared/lib/auth/authStorage";
 import { generateIdempotencyKey } from "@/shared/lib/idempotency/idempotency";
 import { withRetry } from "@/shared/lib/retry/withRetry";
@@ -14,6 +16,7 @@ export const CheckoutPage = () => {
   const navigate = useNavigate();
   const { isLoggedIn, token } = useAuth();
   const { cart, clearCart } = useCart();
+  const { evaluatePromotions } = usePromotion();
 
   const apiClient = useMemo(
     () => createOrderApiClient(() => token, dispatchUnauthorizedEvent),
@@ -24,6 +27,7 @@ export const CheckoutPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [retryAttempt, setRetryAttempt] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [evaluation, setEvaluation] = useState<EvaluatePromotionResponse | null>(null);
 
   const placeOrder = async () => {
     if (!isLoggedIn) {
@@ -41,6 +45,21 @@ export const CheckoutPage = () => {
     setRetryAttempt(null);
 
     try {
+      let evaluationResult: EvaluatePromotionResponse | null = null;
+
+      if (cart.appliedPromotions.length > 0) {
+        evaluationResult = await evaluatePromotions(
+          cart.items.map((item) => item.productId),
+          cart.appliedPromotions,
+        );
+
+        if (!evaluationResult.approved) {
+          throw new Error(evaluationResult.message || "Promotions were rejected.");
+        }
+      }
+
+      setEvaluation(evaluationResult);
+
       const order = await withRetry(
         () =>
           apiClient.placeOrder({
@@ -87,8 +106,30 @@ export const CheckoutPage = () => {
             </article>
           ))}
           <p>Total: {formatPrice(cart.totalPrice)}</p>
+          <p>Applied promotions: {cart.appliedPromotions.length}</p>
         </section>
       )}
+
+      <PromotionSelector />
+
+      {evaluation ? (
+        <section aria-labelledby="promotion-evaluation-title">
+          <h2 id="promotion-evaluation-title">Promotion evaluation</h2>
+          <p>{evaluation.message}</p>
+          <p>Loyalty points earned: {evaluation.loyaltyPointsEarned}</p>
+          {evaluation.appliedDiscounts.length > 0 ? (
+            <ul>
+              {evaluation.appliedDiscounts.map((discount) => (
+                <li key={discount.productId}>
+                  Product {discount.productId}: {discount.discountPercentage}% discount
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No discounts applied.</p>
+          )}
+        </section>
+      ) : null}
 
       {retryAttempt ? <p>Retrying... (attempt {retryAttempt}/3)</p> : null}
       {errorMessage ? <p role="alert">{errorMessage}</p> : null}

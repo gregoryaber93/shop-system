@@ -85,6 +85,16 @@ describe("checkout retry", () => {
           createdAt: "2026-03-21T00:00:00.000Z",
         });
       }),
+      http.get(`${API_BASE}/api/promotions`, async () => {
+        return HttpResponse.json([]);
+      }),
+      http.get(`${API_BASE}/api/promotions/user-profile`, async () => {
+        return HttpResponse.json({
+          userId: "user-302",
+          totalPoints: 0,
+          earnedAt: "2026-01-01T00:00:00.000Z",
+        });
+      }),
       http.get(`${API_BASE}/api/orders/order-retry-1`, async () => {
         return HttpResponse.json({
           id: "order-retry-1",

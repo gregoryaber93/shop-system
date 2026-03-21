@@ -162,36 +162,36 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: User can apply promotions at checkout.
 
 ### 4.1 Promotions Display (2h)
-- [ ] PromotionService API client
-- [ ] React Query hooks (useActivePromotions, useUserPromotionProfile)
-- [ ] Promotions list component
-- [ ] Promotion card with details (discount%, required points)
-- [ ] Show which promos are applicable to cart
+- [x] PromotionService API client
+- [x] React Query hooks (useActivePromotions, useUserPromotionProfile)
+- [x] Promotions list component
+- [x] Promotion card with details (discount%, required points)
+- [x] Show which promos are applicable to cart
 
 **Instruction**: [11-promotions-and-discounts.instructions.md](instructions/11-promotions-and-discounts.instructions.md#components)
 
 ### 4.2 Promotion Evaluation (2h)
-- [ ] evaluatePromotions API call
-- [ ] Integration in checkout (call before order)
-- [ ] Display applied discounts in order summary
-- [ ] Display loyalty points earned
-- [ ] Handle promo evaluation errors
+- [x] evaluatePromotions API call
+- [x] Integration in checkout (call before order)
+- [x] Display applied discounts in order summary
+- [x] Display loyalty points earned
+- [x] Handle promo evaluation errors
 
 **Instruction**: [11-promotions-and-discounts.instructions.md](instructions/11-promotions-and-discounts.instructions.md#api-client-for-promotions)
 
 ### 4.3 Add Promos to Cart (2h)
-- [ ] applyPromotion action in CartContext
-- [ ] removePromotion action
-- [ ] Display applied promos in cart
-- [ ] Validate user has enough loyalty points
-- [ ] Update cart UI when promo applied/removed
+- [x] applyPromotion action in CartContext
+- [x] removePromotion action
+- [x] Display applied promos in cart
+- [x] Validate user has enough loyalty points
+- [x] Update cart UI when promo applied/removed
 
 **Instruction**: [11-promotions-and-discounts.instructions.md](instructions/11-promotions-and-discounts.instructions.md#promotions-in-cart)
 
 ### 4.4 Tests (1.5h)
-- [ ] Promotion listing test
-- [ ] Apply promotion test
-- [ ] Evaluate promotions test
+- [x] Promotion listing test
+- [x] Apply promotion test
+- [x] Evaluate promotions test
 
 **Instruction**: [16-integration-testing-scenarios.instructions.md](instructions/16-integration-testing-scenarios.instructions.md#scenario-2-browse-products---add-to-cart---checkout)
 
@@ -368,7 +368,7 @@ Implementation plan for features in logical order to build a fully functional ap
 | Day 1-3 | 1 | Auth working | ✅ Done |
 | Day 4-6 | 2 | Products + Cart | ✅ Done |
 | Day 7-9 | 3 | Checkout + Orders | ✅ Done |
-| Day 10-11 | 4 | Promotions | ⏳ |
+| Day 10-11 | 4 | Promotions | ✅ Done |
 | Day 12-13 | 5 | User Profile | ⏳ |
 | Day 14-15 | 6 | Error & Performance | ⏳ |
 | Day 16-17 | 7 | Testing & Deploy | ⏳ |

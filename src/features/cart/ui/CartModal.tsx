@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { PromotionSelector } from "@/features/promotions";
 import { useCart } from "../context/CartContext";
 import { CartItem } from "./CartItem";
 import { CartSummary } from "./CartSummary";
@@ -39,6 +40,7 @@ export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
       )}
 
       <CartSummary cart={cart} onClear={clearCart} />
+      <PromotionSelector />
 
       <Link to="/checkout" onClick={onClose} aria-disabled={cart.items.length === 0}>
         Go to checkout

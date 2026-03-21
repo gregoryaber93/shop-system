@@ -38,6 +38,16 @@ describe("checkout flow", () => {
           { id: "prod-10", name: "Widget", type: "Tool", price: 25, shopId: "shop-1" },
         ]);
       }),
+      http.get(`${API_BASE}/api/promotions`, async () => {
+        return HttpResponse.json([]);
+      }),
+      http.get(`${API_BASE}/api/promotions/user-profile`, async () => {
+        return HttpResponse.json({
+          userId: "user-301",
+          totalPoints: 0,
+          earnedAt: "2026-01-01T00:00:00.000Z",
+        });
+      }),
       http.post(`${API_BASE}/api/orders`, async ({ request }) => {
         seenIdempotencyKey = request.headers.get("Idempotency-Key");
 

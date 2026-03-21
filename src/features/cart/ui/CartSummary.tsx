@@ -14,6 +14,13 @@ export const CartSummary = ({ cart, onClear }: CartSummaryProps) => {
       <p>Total items: {cart.items.reduce((sum, item) => sum + item.quantity, 0)}</p>
       <p>Subtotal: {formatPrice(cart.totalPrice)}</p>
       <p>Applied promotions: {cart.appliedPromotions.length}</p>
+      {cart.appliedPromotions.length > 0 ? (
+        <ul>
+          {cart.appliedPromotions.map((promotionId) => (
+            <li key={promotionId}>{promotionId}</li>
+          ))}
+        </ul>
+      ) : null}
       <button type="button" onClick={onClear} disabled={cart.items.length === 0}>
         Clear cart
       </button>
