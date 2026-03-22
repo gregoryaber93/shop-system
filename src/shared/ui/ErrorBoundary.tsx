@@ -32,7 +32,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   public render() {
     if (this.state.hasError) {
       return (
-        <main>
+        <main className="status-page app-error-boundary">
           <h1>Application error</h1>
           <p>{this.state.errorMessage}</p>
           <button

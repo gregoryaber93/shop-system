@@ -69,28 +69,32 @@ export const ProductsSection = () => {
   };
 
   return (
-    <section aria-labelledby="catalog-heading">
-      <header>
+    <section className="products-section" aria-labelledby="catalog-heading">
+      <header className="section-head">
         <h2 id="catalog-heading">Catalog</h2>
         <p>Browse products by shop and sort them client-side.</p>
       </header>
 
-      <div>
-        <label htmlFor="shop-filter">Shop</label>
-        <select id="shop-filter" value={filters.selectedShopId} onChange={onShopChange}>
-          <option value="all">All shops</option>
-          {shopOptions.map((shopId) => (
-            <option key={shopId} value={shopId}>{shopId}</option>
-          ))}
-        </select>
+      <div className="filters-grid">
+        <div>
+          <label htmlFor="shop-filter">Shop</label>
+          <select id="shop-filter" value={filters.selectedShopId} onChange={onShopChange}>
+            <option value="all">All shops</option>
+            {shopOptions.map((shopId) => (
+              <option key={shopId} value={shopId}>{shopId}</option>
+            ))}
+          </select>
+        </div>
 
-        <label htmlFor="sort-order">Sort</label>
-        <select id="sort-order" value={filters.sortOrder} onChange={onSortChange}>
-          <option value="name-asc">Name A-Z</option>
-          <option value="name-desc">Name Z-A</option>
-          <option value="price-asc">Price low-high</option>
-          <option value="price-desc">Price high-low</option>
-        </select>
+        <div>
+          <label htmlFor="sort-order">Sort</label>
+          <select id="sort-order" value={filters.sortOrder} onChange={onSortChange}>
+            <option value="name-asc">Name A-Z</option>
+            <option value="name-desc">Name Z-A</option>
+            <option value="price-asc">Price low-high</option>
+            <option value="price-desc">Price high-low</option>
+          </select>
+        </div>
       </div>
 
       <ProductList

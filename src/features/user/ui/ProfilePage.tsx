@@ -94,33 +94,33 @@ export const ProfilePage = () => {
   };
 
   if (isLoading) {
-    return <main><p>Loading profile...</p></main>;
+    return <main className="profile-page"><p>Loading profile...</p></main>;
   }
 
   if (profileError) {
     return (
-      <main>
+      <main className="profile-page">
         <ErrorState error={profileError} onRetry={() => { void refetchProfile(); }} title="Profile unavailable" />
       </main>
     );
   }
 
   if (!profile) {
-    return <main><p>Not authenticated.</p></main>;
+    return <main className="profile-page"><p>Not authenticated.</p></main>;
   }
 
   return (
-    <main>
-      <header>
+    <main className="profile-page">
+      <header className="section-head">
         <h1>My profile</h1>
         <p>Manage your account details and review your order history.</p>
-        <Link to="/">Back to dashboard</Link>
+        <Link className="button-link" to="/">Back to dashboard</Link>
       </header>
 
       {updateErrorMessage ? <ErrorState error={new Error(updateErrorMessage)} title="Cannot update profile" /> : null}
-      {updateSuccessMessage ? <p>{updateSuccessMessage}</p> : null}
+      {updateSuccessMessage ? <p className="inline-success">{updateSuccessMessage}</p> : null}
 
-      <section aria-labelledby="profile-details-title">
+      <section className="profile-details" aria-labelledby="profile-details-title">
         <h2 id="profile-details-title">Profile details</h2>
         <p>Email: {profile.email}</p>
         <p>Member since: {new Date(profile.createdAt).toLocaleDateString()}</p>
@@ -133,7 +133,7 @@ export const ProfilePage = () => {
             <button type="button" onClick={() => setIsEditing(true)}>Edit profile</button>
           </>
         ) : (
-          <form onSubmit={onSave} aria-label="profile form">
+          <form className="auth-form" onSubmit={onSave} aria-label="profile form">
             <label htmlFor="firstName">First name</label>
             <input
               id="firstName"
@@ -175,7 +175,7 @@ export const ProfilePage = () => {
 
       <OrderHistory orderHistory={orderHistory} isLoading={isLoading} />
 
-      <button type="button" onClick={logout}>Logout</button>
+      <button className="secondary-action" type="button" onClick={logout}>Logout</button>
     </main>
   );
 };

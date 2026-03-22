@@ -14,32 +14,54 @@ export const HomePage = () => {
   const { profile, isLoading, profileError, refetchProfile } = useUser();
 
   if (isLoading) {
-    return <main><p>Loading profile...</p></main>;
+    return <main className="dashboard-page"><p>Loading profile...</p></main>;
   }
 
   if (profileError) {
     return (
-      <main>
+      <main className="dashboard-page">
         <ErrorState error={profileError} onRetry={() => { void refetchProfile(); }} title="Profile unavailable" />
       </main>
     );
   }
 
   return (
-    <main>
-      <h1>Shop Dashboard</h1>
-      <p>You are logged in.</p>
-      <p>User: {userId ?? "unknown"}</p>
-      <p>Email: {profile?.email ?? "unknown"}</p>
-      <p>Roles: {roles.length > 0 ? roles.join(", ") : "none"}</p>
-      <p>Cart items: {cart.items.length}</p>
-      <Link to="/profile">Go to profile</Link>
-      <button type="button" onClick={() => setIsCartOpen(true)}>
-        View cart
-      </button>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
+    <main className="dashboard-page">
+      <header className="dashboard-hero">
+        <div>
+          <h1>Shop Dashboard</h1>
+          <p>You are logged in.</p>
+        </div>
+        <div className="dashboard-actions">
+          <Link className="button-link" to="/profile">Go to profile</Link>
+          <button type="button" onClick={() => setIsCartOpen(true)}>
+            View cart
+          </button>
+          <button type="button" onClick={logout}>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <section className="dashboard-stats" aria-label="User session details">
+        <article>
+          <h3>User</h3>
+          <p>{userId ?? "unknown"}</p>
+        </article>
+        <article>
+          <h3>Email</h3>
+          <p>{profile?.email ?? "unknown"}</p>
+        </article>
+        <article>
+          <h3>Roles</h3>
+          <p>{roles.length > 0 ? roles.join(", ") : "none"}</p>
+        </article>
+        <article>
+          <h3>Cart items</h3>
+          <p>{cart.items.length}</p>
+        </article>
+      </section>
+
       <ProductsSection />
       <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </main>

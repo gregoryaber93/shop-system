@@ -14,7 +14,7 @@ const NotFoundPage = lazy(() => import("../ui/NotFoundPage").then((module) => ({
 
 export const AppRoutes = () => {
   return (
-    <Suspense fallback={<main><p>Loading page...</p></main>}>
+    <Suspense fallback={<main className="status-page"><p>Loading page...</p></main>}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />

@@ -11,12 +11,12 @@ const formatPrice = (value: number): string => `${value.toFixed(2)} USD`;
 
 export const OrderHistory = ({ orderHistory, isLoading }: OrderHistoryProps) => {
   if (isLoading) {
-    return <section><h2>Order history</h2><p>Loading orders...</p></section>;
+    return <section className="order-history"><h2>Order history</h2><p>Loading orders...</p></section>;
   }
 
   if (orderHistory.length === 0) {
     return (
-      <section>
+      <section className="order-history">
         <h2>Order history</h2>
         <p>You have no orders yet.</p>
       </section>
@@ -24,9 +24,10 @@ export const OrderHistory = ({ orderHistory, isLoading }: OrderHistoryProps) => 
   }
 
   return (
-    <section aria-labelledby="order-history-title">
+    <section className="order-history" aria-labelledby="order-history-title">
       <h2 id="order-history-title">Order history</h2>
-      <table>
+      <div className="table-scroll">
+        <table>
         <thead>
           <tr>
             <th>Order ID</th>
@@ -52,6 +53,7 @@ export const OrderHistory = ({ orderHistory, isLoading }: OrderHistoryProps) => 
           ))}
         </tbody>
       </table>
+      </div>
     </section>
   );
 };

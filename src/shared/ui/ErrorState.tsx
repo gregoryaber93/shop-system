@@ -80,7 +80,7 @@ export const ErrorState = ({
   const grpcError = mapApiErrorToGrpc(normalized);
 
   return (
-    <section role="alert" aria-live="polite">
+    <section className="error-state" role="alert" aria-live="polite">
       <h2>{title}</h2>
       <p>{statusMessage}</p>
       <p>{normalized.detail}</p>

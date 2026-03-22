@@ -18,8 +18,8 @@ export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
   }
 
   return (
-    <section aria-label="Cart modal">
-      <header>
+    <section className="cart-modal" aria-label="Cart modal">
+      <header className="cart-modal-header">
         <h2>Your cart</h2>
         <button type="button" onClick={onClose}>Close</button>
       </header>
@@ -27,7 +27,7 @@ export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
       {cart.items.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        <div>
+        <div className="cart-items-grid">
           {cart.items.map((item) => (
             <CartItem
               key={item.productId}
@@ -42,7 +42,7 @@ export const CartModal = ({ isOpen, onClose }: CartModalProps) => {
       <CartSummary cart={cart} onClear={clearCart} />
       <PromotionSelector />
 
-      <Link to="/checkout" onClick={onClose} aria-disabled={cart.items.length === 0}>
+      <Link className="button-link" to="/checkout" onClick={onClose} aria-disabled={cart.items.length === 0}>
         Go to checkout
       </Link>
     </section>

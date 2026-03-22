@@ -9,7 +9,7 @@ interface PromotionCardProps {
 
 export const PromotionCard = ({ promotion, isApplied, canApply, onToggle }: PromotionCardProps) => {
   return (
-    <article>
+    <article className="promotion-card" data-applied={isApplied}>
       <h4>{promotion.name}</h4>
       <p>{promotion.description}</p>
       <p>Discount: {promotion.discountPercentage}%</p>

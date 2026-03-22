@@ -14,7 +14,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const { addItem } = useCart();
 
   return (
-    <article>
+    <article className="product-card">
       {product.imageUrl ? (
         <img
           src={product.imageUrl}
@@ -25,9 +25,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         />
       ) : null}
       <h3>{product.name}</h3>
-      <p>Type: {product.type}</p>
-      <p>Shop: {product.shopId}</p>
-      <p aria-label={`Price ${formatPrice(product.price)}`}>Price: {formatPrice(product.price)}</p>
+      <p><strong>Type:</strong> {product.type}</p>
+      <p><strong>Shop:</strong> {product.shopId}</p>
+      <p aria-label={`Price ${formatPrice(product.price)}`}><strong>Price:</strong> {formatPrice(product.price)}</p>
       <button
         type="button"
         onClick={() =>

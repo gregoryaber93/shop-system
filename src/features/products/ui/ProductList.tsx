@@ -12,7 +12,7 @@ interface ProductListProps {
 export const ProductList = ({ products, isLoading, error, onRetry }: ProductListProps) => {
   if (error) {
     return (
-      <section aria-labelledby="products-heading">
+      <section className="products-list" aria-labelledby="products-heading">
         <h2 id="products-heading">Products</h2>
         <ErrorState error={error} onRetry={onRetry} title="Products unavailable" />
       </section>
@@ -21,7 +21,7 @@ export const ProductList = ({ products, isLoading, error, onRetry }: ProductList
 
   if (isLoading) {
     return (
-      <section aria-labelledby="products-heading">
+      <section className="products-list" aria-labelledby="products-heading">
         <h2 id="products-heading">Products</h2>
         <p>Loading products...</p>
       </section>
@@ -30,7 +30,7 @@ export const ProductList = ({ products, isLoading, error, onRetry }: ProductList
 
   if (products.length === 0) {
     return (
-      <section aria-labelledby="products-heading">
+      <section className="products-list" aria-labelledby="products-heading">
         <h2 id="products-heading">Products</h2>
         <p>No products available.</p>
       </section>
@@ -38,9 +38,9 @@ export const ProductList = ({ products, isLoading, error, onRetry }: ProductList
   }
 
   return (
-    <section aria-labelledby="products-heading">
+    <section className="products-list" aria-labelledby="products-heading">
       <h2 id="products-heading">Products</h2>
-      <div>
+      <div className="products-grid">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

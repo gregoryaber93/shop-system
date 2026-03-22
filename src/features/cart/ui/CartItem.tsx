@@ -13,7 +13,7 @@ export const CartItem = ({ item, onQuantityChange, onRemove }: CartItemProps) =>
   const lineTotal = item.price * item.quantity;
 
   return (
-    <article>
+    <article className="cart-item-card">
       <h4>{item.productName}</h4>
       <p>Unit price: {formatPrice(item.price)}</p>
       <p>Line total: {formatPrice(lineTotal)}</p>

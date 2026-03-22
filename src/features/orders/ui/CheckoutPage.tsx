@@ -91,21 +91,23 @@ export const CheckoutPage = () => {
   };
 
   return (
-    <main>
+    <main className="checkout-page">
       <h1>Checkout</h1>
       <p>Review your order and place it safely with idempotency protection.</p>
 
       {cart.items.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <section className="empty-state"><p>Your cart is empty.</p></section>
       ) : (
-        <section aria-labelledby="checkout-items-title">
+        <section className="checkout-items" aria-labelledby="checkout-items-title">
           <h2 id="checkout-items-title">Items</h2>
+          <div className="checkout-item-grid">
           {cart.items.map((item) => (
             <article key={item.productId}>
               <p>{item.productName}</p>
               <p>{item.quantity} x {formatPrice(item.price)}</p>
             </article>
           ))}
+          </div>
           <p>Total: {formatPrice(cart.totalPrice)}</p>
           <p>Applied promotions: {cart.appliedPromotions.length}</p>
         </section>
@@ -114,7 +116,7 @@ export const CheckoutPage = () => {
       <PromotionSelector />
 
       {evaluation ? (
-        <section aria-labelledby="promotion-evaluation-title">
+        <section className="promotion-evaluation" aria-labelledby="promotion-evaluation-title">
           <h2 id="promotion-evaluation-title">Promotion evaluation</h2>
           <p>{evaluation.message}</p>
           <p>Loyalty points earned: {evaluation.loyaltyPointsEarned}</p>
@@ -143,7 +145,7 @@ export const CheckoutPage = () => {
         />
       ) : null}
 
-      <button type="button" onClick={placeOrder} disabled={isSubmitting || cart.items.length === 0}>
+      <button className="primary-action" type="button" onClick={placeOrder} disabled={isSubmitting || cart.items.length === 0}>
         {isSubmitting ? "Processing..." : "Place order"}
       </button>
     </main>

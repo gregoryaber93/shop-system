@@ -1,5 +1,5 @@
 import { type ChangeEvent, type FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { ErrorState } from "@/shared/ui/ErrorState";
 import { useAuth } from "../context/AuthContext";
@@ -24,9 +24,10 @@ export const RegisterPage = () => {
   };
 
   return (
-    <main>
+    <main className="auth-shell">
       <h1>Register</h1>
-      <form onSubmit={onSubmit} aria-label="register form">
+      <p>Create your account to place orders and track delivery history.</p>
+      <form className="auth-form" onSubmit={onSubmit} aria-label="register form">
         <label htmlFor="register-email">Email</label>
         <input
           id="register-email"
@@ -69,6 +70,9 @@ export const RegisterPage = () => {
           {isLoading ? "Creating account..." : "Create account"}
         </button>
       </form>
+      <p>
+        Already registered? <Link to="/login">Sign in</Link>
+      </p>
 
       {errorMessage ? (
         <ErrorState error={new Error(errorMessage)} title="Registration failed" />

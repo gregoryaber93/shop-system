@@ -18,12 +18,12 @@ export const PromotionSelector = () => {
   };
 
   if (isLoading) {
-    return <section><h3>Promotions</h3><p>Loading promotions...</p></section>;
+    return <section className="promotion-selector"><h3>Promotions</h3><p>Loading promotions...</p></section>;
   }
 
   if (error) {
     return (
-      <section>
+      <section className="promotion-selector">
         <h3>Promotions</h3>
         <p role="alert">Failed to load promotions.</p>
         <button type="button" onClick={() => void refetch()}>Retry</button>
@@ -32,13 +32,14 @@ export const PromotionSelector = () => {
   }
 
   if (activePromotions.length === 0) {
-    return <section><h3>Promotions</h3><p>No promotions available right now.</p></section>;
+    return <section className="promotion-selector"><h3>Promotions</h3><p>No promotions available right now.</p></section>;
   }
 
   return (
-    <section aria-labelledby="promotions-title">
+    <section className="promotion-selector" aria-labelledby="promotions-title">
       <h3 id="promotions-title">Available promotions</h3>
-      {activePromotions.map((promotion) => {
+      <div className="promotion-grid">
+        {activePromotions.map((promotion) => {
         const isApplied = cart.appliedPromotions.includes(promotion.id);
         const canApply =
           promotion.type === "ProductDiscount"
@@ -54,6 +55,7 @@ export const PromotionSelector = () => {
           />
         );
       })}
+      </div>
     </section>
   );
 };
