@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { CACHE_KEY, cacheGet, cacheSet } from "@/shared/lib/cache/localCache";
 import { createApiClient } from "@/shared/lib/http/apiClient";
 import { ApiError } from "@/shared/lib/http/errors";
 import {
@@ -67,15 +68,23 @@ export const createPromotionApiClient = (
 
   return {
     async getAllActive(): Promise<Promotion[]> {
+      const cached = cacheGet<Promotion[]>(CACHE_KEY.promotionsActive, 60 * 1000);
+      if (cached) {
+        return cached;
+      }
+
       const response = await publicClient.get("/api/promotions");
       const promotions = parse(response.data, promotionsSchema, "Invalid promotions response.");
 
       const now = Date.now();
-      return promotions.filter((promotion) => {
+      const activePromotions = promotions.filter((promotion) => {
         const startsAt = new Date(promotion.validFrom).getTime();
         const endsAt = new Date(promotion.validTo).getTime();
         return promotion.isActive && startsAt <= now && now <= endsAt;
       });
+
+      cacheSet(CACHE_KEY.promotionsActive, activePromotions);
+      return activePromotions;
     },
 
     async evaluatePromotions(

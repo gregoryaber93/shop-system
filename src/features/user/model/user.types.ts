@@ -21,6 +21,7 @@ export interface UserContextType {
   orderHistory: OrderHistoryItem[];
   isLoading: boolean;
   isUpdating: boolean;
+  profileError: Error | null;
   errorMessage: string | null;
   updateErrorMessage: string | null;
   updateSuccessMessage: string | null;

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { PromotionSelector } from "@/features/promotions";
+import { PromotionSelector } from "@/features/promotions/ui/PromotionSelector";
 import { useCart } from "../context/CartContext";
 import { CartItem } from "./CartItem";
 import { CartSummary } from "./CartSummary";

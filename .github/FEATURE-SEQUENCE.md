@@ -249,27 +249,27 @@ Implementation plan for features in logical order to build a fully functional ap
 **Goal**: Solid error handling and fast application.
 
 ### 6.1 Error Handling (2h)
-- [ ] ErrorBoundary component
-- [ ] Error UI for 401, 404, 409, 422, 5xx, timeout
-- [ ] Retry buttons on error states
-- [ ] CorrelationId display in error messages
-- [ ] Test error scenarios
+- [x] ErrorBoundary component
+- [x] Error UI for 401, 404, 409, 422, 5xx, timeout
+- [x] Retry buttons on error states
+- [x] CorrelationId display in error messages
+- [x] Test error scenarios
 
 **Instruction**: [13-error-handling-problemdetails.instructions.md](instructions/13-error-handling-problemdetails.instructions.md)
 
 ### 6.2 Performance (2h)
-- [ ] Code splitting (lazy load pages)
-- [ ] Configure React Query cache
-- [ ] Implement localStorage cache
-- [ ] Image optimization (lazy loading)
-- [ ] Bundle analysis (`npm run analyze-bundle`)
+- [x] Code splitting (lazy load pages)
+- [x] Configure React Query cache
+- [x] Implement localStorage cache
+- [x] Image optimization (lazy loading)
+- [x] Bundle analysis (`npm run analyze-bundle`)
 
 **Instruction**: [17-performance-and-caching-strategies.instructions.md](instructions/17-performance-and-caching-strategies.instructions.md)
 
 ### 6.3 Testing Coverage (1h)
-- [ ] Add integration test for error scenarios
-- [ ] Test retry logic
-- [ ] Test timeout handling
+- [x] Add integration test for error scenarios
+- [x] Test retry logic
+- [x] Test timeout handling
 
 **Instruction**: [16-integration-testing-scenarios.instructions.md](instructions/16-integration-testing-scenarios.instructions.md#scenario-4-error-handling--retry)
 
@@ -370,7 +370,7 @@ Implementation plan for features in logical order to build a fully functional ap
 | Day 7-9 | 3 | Checkout + Orders | ✅ Done |
 | Day 10-11 | 4 | Promotions | ✅ Done |
 | Day 12-13 | 5 | User Profile | ✅ Done |
-| Day 14-15 | 6 | Error & Performance | ⏳ |
+| Day 14-15 | 6 | Error & Performance | ✅ Done |
 | Day 16-17 | 7 | Testing & Deploy | ⏳ |
 
 Estimated total: **17 days** from start to fully functional production app.

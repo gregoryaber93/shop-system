@@ -60,6 +60,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     orderHistory: orderHistoryQuery.data ?? [],
     isLoading: profileQuery.isLoading || (shouldFetchOrderHistory && orderHistoryQuery.isLoading),
     isUpdating: updateProfileMutation.isPending,
+    profileError: profileQuery.error instanceof Error ? profileQuery.error : null,
     errorMessage: profileQuery.error instanceof Error ? profileQuery.error.message : null,
     updateErrorMessage: updateProfileMutation.error instanceof Error ? updateProfileMutation.error.message : null,
     updateSuccessMessage: updateProfileMutation.isSuccess ? "Profile updated successfully." : null,

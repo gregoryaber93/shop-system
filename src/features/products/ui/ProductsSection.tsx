@@ -96,7 +96,7 @@ export const ProductsSection = () => {
       <ProductList
         products={sortedProducts}
         isLoading={isLoading}
-        errorMessage={error?.message ?? null}
+        error={error}
         onRetry={onRetry}
       />
     </section>

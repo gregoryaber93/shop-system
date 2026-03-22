@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/features/auth";
 import { useCart } from "@/features/cart";
-import { PromotionSelector, type EvaluatePromotionResponse } from "@/features/promotions";
-import { usePromotion } from "@/features/promotions";
+import { usePromotion } from "@/features/promotions/hooks/usePromotion";
+import { type EvaluatePromotionResponse } from "@/features/promotions/model/promotion.types";
+import { PromotionSelector } from "@/features/promotions/ui/PromotionSelector";
 import { dispatchUnauthorizedEvent } from "@/shared/lib/auth/authStorage";
 import { generateIdempotencyKey } from "@/shared/lib/idempotency/idempotency";
 import { withRetry } from "@/shared/lib/retry/withRetry";
+import { ErrorState } from "@/shared/ui/ErrorState";
 import { createOrderApiClient } from "../api/orderClient";
 
 const formatPrice = (value: number): string => `${value.toFixed(2)} USD`;
@@ -26,7 +28,7 @@ export const CheckoutPage = () => {
   const idempotencyKeyRef = useRef(generateIdempotencyKey());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [retryAttempt, setRetryAttempt] = useState<number | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submissionError, setSubmissionError] = useState<unknown>(null);
   const [evaluation, setEvaluation] = useState<EvaluatePromotionResponse | null>(null);
 
   const placeOrder = async () => {
@@ -36,12 +38,12 @@ export const CheckoutPage = () => {
     }
 
     if (cart.items.length === 0) {
-      setErrorMessage("Your cart is empty.");
+      setSubmissionError(new Error("Your cart is empty."));
       return;
     }
 
     setIsSubmitting(true);
-    setErrorMessage(null);
+    setSubmissionError(null);
     setRetryAttempt(null);
 
     try {
@@ -82,8 +84,7 @@ export const CheckoutPage = () => {
       clearCart();
       navigate(`/orders/${order.id}`);
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to place order.";
-      setErrorMessage(message);
+      setSubmissionError(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -132,7 +133,15 @@ export const CheckoutPage = () => {
       ) : null}
 
       {retryAttempt ? <p>Retrying... (attempt {retryAttempt}/3)</p> : null}
-      {errorMessage ? <p role="alert">{errorMessage}</p> : null}
+      {submissionError ? (
+        <ErrorState
+          error={submissionError}
+          title="Checkout failed"
+          onRetry={() => {
+            void placeOrder();
+          }}
+        />
+      ) : null}
 
       <button type="button" onClick={placeOrder} disabled={isSubmitting || cart.items.length === 0}>
         {isSubmitting ? "Processing..." : "Place order"}

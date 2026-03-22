@@ -47,6 +47,10 @@ describe("register flow", () => {
       </MemoryRouter>,
     );
 
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Register" })).toBeInTheDocument();
+    });
+
     fireEvent.change(screen.getByLabelText("Email"), {
       target: { value: "alice@example.com" },
     });

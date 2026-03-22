@@ -1,6 +1,7 @@
 import { type ChangeEvent, type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { ErrorState } from "@/shared/ui/ErrorState";
 import { useAuth } from "../context/AuthContext";
 
 export const LoginPage = () => {
@@ -57,9 +58,7 @@ export const LoginPage = () => {
       </form>
 
       {errorMessage ? (
-        <p role="alert">
-          {errorMessage}
-        </p>
+        <ErrorState error={new Error(errorMessage)} title="Login failed" />
       ) : null}
     </main>
   );

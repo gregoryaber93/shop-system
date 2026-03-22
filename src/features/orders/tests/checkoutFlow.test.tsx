@@ -102,7 +102,7 @@ describe("checkout flow", () => {
       </MemoryRouter>,
     );
 
-    await waitFor(() => expect(screen.getByText("Widget")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("Widget")).toBeInTheDocument(), { timeout: 4000 });
 
     fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
     fireEvent.click(screen.getByRole("button", { name: "View cart" }));

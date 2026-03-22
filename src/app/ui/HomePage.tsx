@@ -5,19 +5,24 @@ import { useAuth } from "../../features/auth";
 import { CartModal, useCart } from "@/features/cart";
 import { ProductsSection } from "@/features/products";
 import { useUser } from "@/features/user";
+import { ErrorState } from "@/shared/ui/ErrorState";
 
 export const HomePage = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { userId, roles, logout } = useAuth();
   const { cart } = useCart();
-  const { profile, isLoading, errorMessage } = useUser();
+  const { profile, isLoading, profileError, refetchProfile } = useUser();
 
   if (isLoading) {
     return <main><p>Loading profile...</p></main>;
   }
 
-  if (errorMessage) {
-    return <main><p role="alert">{errorMessage}</p></main>;
+  if (profileError) {
+    return (
+      <main>
+        <ErrorState error={profileError} onRetry={() => { void refetchProfile(); }} title="Profile unavailable" />
+      </main>
+    );
   }
 
   return (

@@ -4,6 +4,7 @@ export interface Product {
   type: string;
   price: number;
   shopId: string;
+  imageUrl?: string;
 }
 
 export interface ProductsFilterState {

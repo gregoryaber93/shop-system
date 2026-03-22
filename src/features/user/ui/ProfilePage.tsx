@@ -2,6 +2,7 @@ import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from "
 import { Link } from "react-router-dom";
 
 import { useAuth } from "@/features/auth";
+import { ErrorState } from "@/shared/ui/ErrorState";
 import { useUser } from "../context/UserContext";
 import { type UserProfile } from "../model/user.types";
 import { OrderHistory } from "./OrderHistory";
@@ -27,9 +28,10 @@ export const ProfilePage = () => {
     orderHistory,
     isLoading,
     isUpdating,
-    errorMessage,
+    profileError,
     updateErrorMessage,
     updateSuccessMessage,
+    refetchProfile,
     updateProfile,
   } = useUser();
 
@@ -95,8 +97,12 @@ export const ProfilePage = () => {
     return <main><p>Loading profile...</p></main>;
   }
 
-  if (errorMessage) {
-    return <main><p role="alert">{errorMessage}</p></main>;
+  if (profileError) {
+    return (
+      <main>
+        <ErrorState error={profileError} onRetry={() => { void refetchProfile(); }} title="Profile unavailable" />
+      </main>
+    );
   }
 
   if (!profile) {
@@ -111,7 +117,7 @@ export const ProfilePage = () => {
         <Link to="/">Back to dashboard</Link>
       </header>
 
-      {updateErrorMessage ? <p role="alert">{updateErrorMessage}</p> : null}
+      {updateErrorMessage ? <ErrorState error={new Error(updateErrorMessage)} title="Cannot update profile" /> : null}
       {updateSuccessMessage ? <p>{updateSuccessMessage}</p> : null}
 
       <section aria-labelledby="profile-details-title">

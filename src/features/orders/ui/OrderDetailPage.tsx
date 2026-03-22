@@ -1,19 +1,30 @@
 import { useParams } from "react-router-dom";
 
+import { ErrorState } from "@/shared/ui/ErrorState";
 import { useOrderPolling } from "../hooks/useOrderPolling";
 
 const formatPrice = (value: number): string => `${value.toFixed(2)} USD`;
 
 export const OrderDetailPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
-  const { data: order, isLoading, error } = useOrderPolling(orderId ?? null, 2000);
+  const { data: order, isLoading, error, refetch } = useOrderPolling(orderId ?? null, 2000);
 
   if (isLoading) {
     return <main><p>Loading order...</p></main>;
   }
 
   if (error) {
-    return <main><p role="alert">{error instanceof Error ? error.message : "Failed to load order."}</p></main>;
+    return (
+      <main>
+        <ErrorState
+          error={error}
+          title="Order unavailable"
+          onRetry={() => {
+            void refetch();
+          }}
+        />
+      </main>
+    );
   }
 
   if (!order) {

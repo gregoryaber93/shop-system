@@ -1,20 +1,20 @@
 import { ProductCard } from "./ProductCard";
+import { ErrorState } from "@/shared/ui/ErrorState";
 import { type Product } from "../model/product.types";
 
 interface ProductListProps {
   products: Product[];
   isLoading: boolean;
-  errorMessage: string | null;
+  error: unknown;
   onRetry: () => void;
 }
 
-export const ProductList = ({ products, isLoading, errorMessage, onRetry }: ProductListProps) => {
-  if (errorMessage) {
+export const ProductList = ({ products, isLoading, error, onRetry }: ProductListProps) => {
+  if (error) {
     return (
       <section aria-labelledby="products-heading">
         <h2 id="products-heading">Products</h2>
-        <p role="alert">Failed to load products. {errorMessage}</p>
-        <button type="button" onClick={onRetry}>Retry</button>
+        <ErrorState error={error} onRetry={onRetry} title="Products unavailable" />
       </section>
     );
   }

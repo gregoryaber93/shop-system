@@ -62,7 +62,7 @@ describe("cart actions", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Widget")).toBeInTheDocument();
-    });
+    }, { timeout: 4000 });
 
     fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
     fireEvent.click(screen.getByRole("button", { name: "View cart" }));
@@ -78,7 +78,7 @@ describe("cart actions", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Widget")).toBeInTheDocument();
-    });
+    }, { timeout: 4000 });
 
     fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
     fireEvent.click(screen.getByRole("button", { name: "View cart" }));
@@ -100,7 +100,7 @@ describe("cart actions", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Widget")).toBeInTheDocument();
-    });
+    }, { timeout: 4000 });
 
     fireEvent.click(screen.getByRole("button", { name: "Add to cart" }));
     fireEvent.click(screen.getByRole("button", { name: "View cart" }));

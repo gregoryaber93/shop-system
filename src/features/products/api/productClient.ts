@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { createApiClient } from "@/shared/lib/http/apiClient";
 import { ApiError } from "@/shared/lib/http/errors";
+import { CACHE_KEY, cacheGet, cacheSet } from "@/shared/lib/cache/localCache";
 import { type Product } from "../model/product.types";
 
 const productSchema = z.object({
@@ -10,6 +11,7 @@ const productSchema = z.object({
   type: z.string().min(1),
   price: z.number().min(0),
   shopId: z.string().min(1),
+  imageUrl: z.string().url().optional(),
 });
 
 const productsSchema = z.array(productSchema);
@@ -46,17 +48,40 @@ const parseProduct = (value: unknown): Product => {
 
 export const productApiClient = {
   async getAll(): Promise<Product[]> {
+    const cached = cacheGet<Product[]>(CACHE_KEY.productsAll, 30 * 60 * 1000);
+    if (cached) {
+      return cached;
+    }
+
     const response = await client.get("/api/products");
-    return parseProducts(response.data);
+    const products = parseProducts(response.data);
+    cacheSet(CACHE_KEY.productsAll, products);
+    return products;
   },
 
   async getByShop(shopId: string): Promise<Product[]> {
+    const cacheKey = `${CACHE_KEY.productsByShop}${shopId}`;
+    const cached = cacheGet<Product[]>(cacheKey, 30 * 60 * 1000);
+    if (cached) {
+      return cached;
+    }
+
     const response = await client.get(`/api/products/shop/${shopId}`);
-    return parseProducts(response.data);
+    const products = parseProducts(response.data);
+    cacheSet(cacheKey, products);
+    return products;
   },
 
   async getById(productId: string): Promise<Product> {
+    const cacheKey = `${CACHE_KEY.productDetail}${productId}`;
+    const cached = cacheGet<Product>(cacheKey, 30 * 60 * 1000);
+    if (cached) {
+      return cached;
+    }
+
     const response = await client.get(`/api/products/${productId}`);
-    return parseProduct(response.data);
+    const product = parseProduct(response.data);
+    cacheSet(cacheKey, product);
+    return product;
   },
 };

@@ -15,6 +15,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <article>
+      {product.imageUrl ? (
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          width={240}
+          height={160}
+          loading="lazy"
+        />
+      ) : null}
       <h3>{product.name}</h3>
       <p>Type: {product.type}</p>
       <p>Shop: {product.shopId}</p>
