@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 
+import { mapApiErrorToGrpc } from "@/shared/lib/grpc/grpcErrors";
 import { ApiError } from "@/shared/lib/http/errors";
 
 interface ErrorStateProps {
@@ -76,12 +77,14 @@ export const ErrorState = ({
 }: ErrorStateProps) => {
   const normalized = normalizeError(error);
   const statusMessage = mapStatusMessage(normalized.status);
+  const grpcError = mapApiErrorToGrpc(normalized);
 
   return (
     <section role="alert" aria-live="polite">
       <h2>{title}</h2>
       <p>{statusMessage}</p>
       <p>{normalized.detail}</p>
+      {grpcError ? <p>gRPC code: {grpcError.code}</p> : null}
       {normalized.correlationId ? <p>Correlation ID: {normalized.correlationId}</p> : null}
       {onRetry ? <button type="button" onClick={onRetry}>{retryLabel}</button> : null}
       {extraActions}

@@ -8,6 +8,9 @@
     "build": "tsc -b && vite build",
     "analyze-bundle": "vite build",
     "preview": "vite preview",
+    "verify": "npm run type-check && npm run test && npm run build",
+    "check:lighthouse": "node .github/scripts/lighthouse-check.mjs",
+    "verify:deploy": "npm run verify && npm run check:lighthouse",
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"

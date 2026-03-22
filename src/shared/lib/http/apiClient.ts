@@ -5,6 +5,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 
+import { logApiCall } from "./apiLogging";
 import { toApiError } from "./errors";
 
 const DEFAULT_TIMEOUT_MS = 10_000;
@@ -46,6 +47,14 @@ export const createApiClient = (
     (response: AxiosResponse) => response,
     (error: unknown) => {
       const apiError = toApiError(error);
+      const request = (error as { config?: { method?: string; url?: string; headers?: Record<string, unknown> } }).config;
+
+      logApiCall({
+        method: request?.method?.toUpperCase() ?? "UNKNOWN",
+        url: request?.url ?? "unknown",
+        correlationId: apiError.correlationId,
+        status: apiError.status,
+      });
 
       if (apiError.status === 401 && onUnauthorized) {
         onUnauthorized();
