@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/features/auth";
 import { useCart } from "@/features/cart";
@@ -16,7 +16,7 @@ const formatPrice = (value: number): string => `${value.toFixed(2)} USD`;
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
-  const { isLoggedIn, token } = useAuth();
+  const { isLoggedIn, token, logout } = useAuth();
   const { cart, clearCart } = useCart();
   const { evaluatePromotions } = usePromotion();
 
@@ -92,6 +92,10 @@ export const CheckoutPage = () => {
 
   return (
     <main className="checkout-page">
+      <div className="page-actions" aria-label="Checkout navigation actions">
+        <Link className="button-link" to="/">Back to dashboard</Link>
+        <button className="secondary-action" type="button" onClick={logout}>Logout</button>
+      </div>
       <h1>Checkout</h1>
       <p>Review your order and place it safely with idempotency protection.</p>
 

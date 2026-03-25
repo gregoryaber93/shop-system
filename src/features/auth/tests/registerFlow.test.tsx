@@ -16,7 +16,7 @@ const buildJwt = (payload: Record<string, unknown>): string => {
 };
 
 createMockServer([
-  http.post(`${API_BASE}/api/authentication/register`, async () => {
+  http.post(`${API_BASE}/api/auth/register`, async () => {
     const token = buildJwt({
       sub: "user-2",
       roles: ["User"],

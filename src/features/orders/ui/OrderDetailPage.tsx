@@ -1,5 +1,6 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
+import { useAuth } from "@/features/auth";
 import { ErrorState } from "@/shared/ui/ErrorState";
 import { useOrderPolling } from "../hooks/useOrderPolling";
 
@@ -7,11 +8,16 @@ const formatPrice = (value: number): string => `${value.toFixed(2)} USD`;
 
 export const OrderDetailPage = () => {
   const { orderId } = useParams<{ orderId: string }>();
+  const { logout } = useAuth();
   const { data: order, isLoading, error, refetch } = useOrderPolling(orderId ?? null, 2000);
 
   if (isLoading) {
     return (
       <main className="order-page">
+        <div className="page-actions" aria-label="Order navigation actions">
+          <Link className="button-link" to="/">Back to dashboard</Link>
+          <button className="secondary-action" type="button" onClick={logout}>Logout</button>
+        </div>
         <h1>Order details</h1>
         <p>Loading order...</p>
       </main>
@@ -21,6 +27,10 @@ export const OrderDetailPage = () => {
   if (error) {
     return (
       <main className="order-page">
+        <div className="page-actions" aria-label="Order navigation actions">
+          <Link className="button-link" to="/">Back to dashboard</Link>
+          <button className="secondary-action" type="button" onClick={logout}>Logout</button>
+        </div>
         <h1>Order details</h1>
         <ErrorState
           error={error}
@@ -36,6 +46,10 @@ export const OrderDetailPage = () => {
   if (!order) {
     return (
       <main className="order-page">
+        <div className="page-actions" aria-label="Order navigation actions">
+          <Link className="button-link" to="/">Back to dashboard</Link>
+          <button className="secondary-action" type="button" onClick={logout}>Logout</button>
+        </div>
         <h1>Order details</h1>
         <p>Order ID: {orderId ?? "unknown"}</p>
         <p>Order not found.</p>
@@ -45,6 +59,10 @@ export const OrderDetailPage = () => {
 
   return (
     <main className="order-page">
+      <div className="page-actions" aria-label="Order navigation actions">
+        <Link className="button-link" to="/">Back to dashboard</Link>
+        <button className="secondary-action" type="button" onClick={logout}>Logout</button>
+      </div>
       <h1>Order details</h1>
       <section className="order-meta" aria-label="Order overview">
         <article>

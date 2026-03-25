@@ -13,9 +13,19 @@ const registerRequestSchema = loginRequestSchema.extend({
   role: z.string().optional(),
 });
 
-const authResponseSchema = z.object({
+const legacyAuthResponseSchema = z.object({
   token: z.string().min(1),
 });
+
+const accessTokenAuthResponseSchema = z.object({
+  accessToken: z.string().min(1),
+});
+
+const authResponseSchema = z.union([legacyAuthResponseSchema, accessTokenAuthResponseSchema]).transform(
+  (value): AuthResponse => ({
+    token: "token" in value ? value.token : value.accessToken,
+  }),
+);
 
 type LoginRequest = z.infer<typeof loginRequestSchema>;
 type RegisterRequest = z.infer<typeof registerRequestSchema>;
@@ -29,7 +39,7 @@ const parseAuthResponse = (value: unknown): AuthResponse => {
     throw new ApiError({
       message: "Invalid auth response",
       status: 500,
-      detail: "Backend returned invalid authentication payload.",
+      detail: "Backend returned invalid auth payload.",
     });
   }
 
@@ -40,14 +50,14 @@ export const authApiClient = {
   async login(input: LoginRequest): Promise<AuthResponse> {
     const request = loginRequestSchema.parse(input);
 
-    const response = await readonlyClient.post("/api/authentication/login", request);
+    const response = await readonlyClient.post("/api/auth/login", request);
     return parseAuthResponse(response.data);
   },
 
   async register(input: RegisterRequest): Promise<AuthResponse> {
     const request = registerRequestSchema.parse(input);
 
-    const response = await readonlyClient.post("/api/authentication/register", {
+    const response = await readonlyClient.post("/api/auth/register", {
       ...request,
       role: request.role ?? "User",
     });

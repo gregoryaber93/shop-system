@@ -8,7 +8,7 @@ import axios, {
 import { logApiCall } from "./apiLogging";
 import { toApiError } from "./errors";
 
-const DEFAULT_TIMEOUT_MS = 10_000;
+const DEFAULT_TIMEOUT_MS = 0;//10_000;
 
 const makeCorrelationId = (): string => {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -23,7 +23,7 @@ export const createApiClient = (
   onUnauthorized?: () => void,
 ): AxiosInstance => {
   const client = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5280",
     timeout: DEFAULT_TIMEOUT_MS,
   });
 

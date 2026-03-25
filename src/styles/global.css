@@ -245,6 +245,69 @@ article {
   flex-wrap: wrap;
 }
 
+.role-top-nav {
+  width: min(1080px, calc(100% - 2rem));
+  margin: 1rem auto 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--surface) 92%, #e7f6f1);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.role-top-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.top-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #bcd9d2;
+  background: #f8fffd;
+  color: var(--primary-strong);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.top-nav-link:hover {
+  border-color: #7fb5a9;
+  color: var(--primary);
+}
+
+.top-nav-link.is-active {
+  background: linear-gradient(135deg, var(--primary), #15803d);
+  border-color: transparent;
+  color: #f7fffd;
+}
+
+.role-top-nav button {
+  margin-top: 0;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.page-actions button,
+.page-actions .button-link {
+  margin-top: 0;
+}
+
 .dashboard-actions button,
 .dashboard-actions .button-link {
   margin-top: 0;
@@ -268,6 +331,23 @@ article {
   margin-bottom: 0;
   color: var(--text);
   font-weight: 700;
+}
+
+.dashboard-stats article small {
+  display: block;
+  margin-top: 0.45rem;
+  color: var(--text-muted);
+}
+
+.manager-actions {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.manager-actions button {
+  margin-top: 0;
+  min-width: 72px;
 }
 
 .products-section,
@@ -458,8 +538,34 @@ thead th {
     width: 100%;
   }
 
+  .role-top-nav {
+    width: calc(100% - 1rem);
+    margin-top: 0.8rem;
+    padding: 0.65rem;
+  }
+
+  .role-top-nav-links {
+    width: 100%;
+  }
+
+  .top-nav-link {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .role-top-nav button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-actions {
+    width: 100%;
+  }
+
   .dashboard-actions button,
-  .dashboard-actions .button-link {
+  .dashboard-actions .button-link,
+  .page-actions button,
+  .page-actions .button-link {
     flex: 1;
     justify-content: center;
   }

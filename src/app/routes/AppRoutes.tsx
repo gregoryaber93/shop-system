@@ -11,6 +11,10 @@ const ProfilePage = lazy(() => import("@/features/user").then((module) => ({ def
 const ForbiddenPage = lazy(() => import("../ui/ForbiddenPage").then((module) => ({ default: module.ForbiddenPage })));
 const HomePage = lazy(() => import("../ui/HomePage").then((module) => ({ default: module.HomePage })));
 const NotFoundPage = lazy(() => import("../ui/NotFoundPage").then((module) => ({ default: module.NotFoundPage })));
+const RoleFeaturePage = lazy(() => import("../ui/RoleFeaturePage").then((module) => ({ default: module.RoleFeaturePage })));
+const AdminUserManagementPage = lazy(() =>
+  import("../ui/AdminUserManagementPage").then((module) => ({ default: module.AdminUserManagementPage })),
+);
 
 export const AppRoutes = () => {
   return (
@@ -48,6 +52,58 @@ export const AppRoutes = () => {
           element={(
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/admin/shops"
+          element={(
+            <ProtectedRoute requiredRoles={["Admin"]}>
+              <RoleFeaturePage
+                title="Shop Management"
+                description="Admin workspace for managing shops."
+              />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/admin/users"
+          element={(
+            <ProtectedRoute requiredRoles={["Admin"]}>
+              <AdminUserManagementPage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/manager/shops"
+          element={(
+            <ProtectedRoute requiredRoles={["Manager"]}>
+              <RoleFeaturePage
+                title="Shops"
+                description="Manager workspace for handling shops."
+              />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/manager/products"
+          element={(
+            <ProtectedRoute requiredRoles={["Manager"]}>
+              <RoleFeaturePage
+                title="Products"
+                description="Manager workspace for managing products."
+              />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/manager/promotions"
+          element={(
+            <ProtectedRoute requiredRoles={["Manager"]}>
+              <RoleFeaturePage
+                title="Promotions"
+                description="Manager workspace for controlling promotions."
+              />
             </ProtectedRoute>
           )}
         />

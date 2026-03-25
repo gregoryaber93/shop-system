@@ -13,6 +13,7 @@ const UserContext = createContext<UserContextType | null>(null);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
   const { token, isLoggedIn } = useAuth();
+  const shouldFetchProfile = location.pathname.startsWith("/profile");
   const shouldFetchOrderHistory = location.pathname.startsWith("/profile");
 
   const apiClient = useMemo(
@@ -28,7 +29,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const profileQuery = useQuery({
     queryKey: ["user", "profile", token],
     queryFn: () => apiClient.getProfile(),
-    enabled: isLoggedIn,
+    enabled: isLoggedIn && shouldFetchProfile,
     retry: false,
   });
 
@@ -58,7 +59,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const value = useMemo<UserContextType>(() => ({
     profile: profileQuery.data ?? null,
     orderHistory: orderHistoryQuery.data ?? [],
-    isLoading: profileQuery.isLoading || (shouldFetchOrderHistory && orderHistoryQuery.isLoading),
+    isLoading:
+      (shouldFetchProfile && profileQuery.isLoading) ||
+      (shouldFetchOrderHistory && orderHistoryQuery.isLoading),
     isUpdating: updateProfileMutation.isPending,
     profileError: profileQuery.error instanceof Error ? profileQuery.error : null,
     errorMessage: profileQuery.error instanceof Error ? profileQuery.error.message : null,
@@ -70,7 +73,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     updateProfile: async (data) => {
       await updateProfileMutation.mutateAsync(data);
     },
-  }), [orderHistoryQuery, profileQuery, shouldFetchOrderHistory, updateProfileMutation]);
+  }), [orderHistoryQuery, profileQuery, shouldFetchOrderHistory, shouldFetchProfile, updateProfileMutation]);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

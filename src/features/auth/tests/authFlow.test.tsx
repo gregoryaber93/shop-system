@@ -17,13 +17,19 @@ const buildJwt = (payload: Record<string, unknown>): string => {
 };
 
 createMockServer([
-  http.post(`${API_BASE}/api/authentication/login`, async () => {
-    const token = buildJwt({
+  http.post(`${API_BASE}/api/auth/login`, async () => {
+    const accessToken = buildJwt({
       sub: "user-1",
       roles: ["User"],
     });
 
-    return HttpResponse.json({ token });
+    return HttpResponse.json({
+      accessToken,
+      email: "john@example.com",
+      expiresAtUtc: "2026-03-22T18:31:47.7955889Z",
+      roles: ["User"],
+      userId: "user-1",
+    });
   }),
   http.get(`${API_BASE}/api/users/profile`, async () => {
     return HttpResponse.json({
